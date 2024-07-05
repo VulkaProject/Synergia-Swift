@@ -19,15 +19,15 @@ struct SynergiaClass: Decodable {
 /// Stores information about school class the user belongs to
 public final class Class {
     /// Class name (number + symbol, example: 1A, 2B, 3C)
-    var name: String
+    public var name: String
     /// Class tutors
-    var classTutors: [String]
+    public var classTutors: [String]
     /// Date of the school year's start
-    var beginSchoolYear: Date
+    public var beginSchoolYear: Date
     /// Date of the school's first semester end
-    var endFirstSemester: Date
+    public var endFirstSemester: Date
     /// Date of the school's year end
-    var endSchoolYear: Date
+    public var endSchoolYear: Date
     
     init(_ Class: SynergiaClass.Class, users: [String: User]) {
         self.name = String(Class.Number) + Class.Symbol
