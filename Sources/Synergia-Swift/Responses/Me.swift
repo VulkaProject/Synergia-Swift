@@ -20,7 +20,7 @@ struct SynergiaMe: Decodable {
         
         var Account: Account
         var Refresh: Int64
-        var User: IdAndUrl
+        var User: User
         var Class: IdAndUrl
     }
     
