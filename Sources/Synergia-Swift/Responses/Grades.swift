@@ -53,6 +53,8 @@ public class Grade {
     public var id: Int64
     /// Grade
     public var grade: String
+    /// Semester when this grade was added
+    public var semester: UInt8
     /// Subject name
     public var subject: String
     /// Category (example: exam, activity, final, etc.)
@@ -71,6 +73,7 @@ public class Grade {
     init(category: SynergiaGradesCategories.GradeCategory, grade: SynergiaGrades.Grade, users: [String: User], subjects: [String: String]) {
         self.id = grade.Id
         self.grade = grade.Grade
+        self.semester = UInt8(grade.Semester)
         self.subject = subjects[String(grade.Subject.Id)] ?? ""
         self.category = category.Name
         self.weight = category.Weight ?? 0
