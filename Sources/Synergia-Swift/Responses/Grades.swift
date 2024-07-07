@@ -52,7 +52,7 @@ public class Grade {
     /// Grades ID (only used for Synergia)
     public var id: Int64
     /// Grade
-    public var grade: UInt8
+    public var grade: String
     /// Subject name
     public var subject: String
     /// Category (example: exam, activity, final, etc.)
@@ -70,7 +70,7 @@ public class Grade {
     
     init(category: SynergiaGradesCategories.GradeCategory, grade: SynergiaGrades.Grade, users: [String: User], subjects: [String: String]) {
         self.id = grade.Id
-        self.grade = UInt8(grade.Grade) ?? 0
+        self.grade = grade.Grade
         self.subject = subjects[String(grade.Subject.Id)] ?? ""
         self.category = category.Name
         self.weight = category.Weight ?? 0
