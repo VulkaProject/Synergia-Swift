@@ -76,18 +76,22 @@ public class SynergiaClient {
     }
     
     /// Gets grades
-    /// - Returns: `Grades` dictionary indexed by subject's name
-    public func getGrades() async throws -> [String: Grade] {
+    /// - Returns: array of`Grades` dictionary indexed by subject's name
+    public func getGrades() async throws -> [String: [Grade]] {
         let categoriesUnwrapped: SynergiaGradesCategories = try await self.request("Grades/Categories")
         let categories = categoriesUnwrapped.Categories
         
         let gradesRaw: SynergiaGrades = try await self.request("Grades")
         
-        var grades = [String: Grade]()
+        var grades = [String: [Grade]]()
         gradesRaw.Grades.forEach { grade in
             if let category = categories.first(where: { $0.Id == grade.Category.Id }) {
                 let grade = Grade(category: category, grade: grade, users: self.users, subjects: self.subjects)
-                grades[grade.subject] = grade
+                
+                if grades[grade.subject] == nil {
+                    grades[grade.subject] = []
+                }
+                grades[grade.subject]?.append(grade)
             }
         }
         
