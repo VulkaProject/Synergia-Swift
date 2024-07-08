@@ -2,7 +2,7 @@ import Foundation
 
 struct SynergiaGrades: Decodable {
     struct Grade: Decodable {
-        var Id: Int64
+        var Id: UInt64
         var Lesson: IdAndUrl
         var Subject: IdAndUrl
         var Student: IdAndUrl
@@ -11,7 +11,7 @@ struct SynergiaGrades: Decodable {
         var Grade: String
         var Date: String
         var AddDate: String
-        var Semester: Int64
+        var Semester: UInt64
         var IsConstituent: Bool
         var IsSemester: Bool
         var IsSemesterProposition: Bool
@@ -50,9 +50,11 @@ public class Grade {
     }
     
     /// Grades ID (only used for Synergia)
-    public var id: Int64
+    public var id: UInt64
     /// Grade
     public var grade: String
+    /// Grade description
+    public var comment: String?
     /// Semester when this grade was added
     public var semester: UInt8
     /// Subject name
@@ -60,7 +62,7 @@ public class Grade {
     /// Category (example: exam, activity, final, etc.)
     public var category: String
     /// Weight
-    public var weight: Int64
+    public var weight: UInt64
     /// Grade type, check `GradeType`
     public var gradeType: GradeType
     /// Teacher name
@@ -70,9 +72,10 @@ public class Grade {
     /// Color (TODO!)
     public var color: UInt8
     
-    init(category: SynergiaGradesCategories.GradeCategory, grade: SynergiaGrades.Grade, users: [String: User], subjects: [String: String]) {
+    init(category: SynergiaGradesCategories.GradeCategory, grade: SynergiaGrades.Grade, comment: String?, users: [String: User], subjects: [String: String]) {
         self.id = grade.Id
         self.grade = grade.Grade
+        self.comment = comment
         self.semester = UInt8(grade.Semester)
         self.subject = subjects[String(grade.Subject.Id)] ?? ""
         self.category = category.Name

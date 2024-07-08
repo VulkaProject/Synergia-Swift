@@ -1,7 +1,7 @@
 import Foundation
 
 struct IdAndUrl: Decodable {
-    var Id: Int64
+    var Id: UInt64
     var Url: String
 }
 

@@ -2,7 +2,7 @@ import Foundation
 
 struct SynergiaGradesCategories: Decodable {
     struct GradeCategory: Decodable {
-        var Id: Int64
+        var Id: UInt64
         var Color: IdAndUrl
         var Name: String
         var AdultsExtramural: Bool
@@ -10,7 +10,7 @@ struct SynergiaGradesCategories: Decodable {
         var Standard: Bool
         var IsReadOnly: String
         var CountToTheAverage: Bool
-        var Weight: Int64?
+        var Weight: UInt64?
         var BlockAnyGrades: Bool
         var ObligationToPerform: Bool
         var IsFinal: Bool?

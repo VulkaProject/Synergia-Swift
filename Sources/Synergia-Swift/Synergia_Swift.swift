@@ -80,13 +80,20 @@ public class SynergiaClient {
     public func getGrades() async throws -> [String: [Grade]] {
         let categoriesUnwrapped: SynergiaGradesCategories = try await self.request("Grades/Categories")
         let categories = categoriesUnwrapped.Categories
+        let commentsRaw: SynergiaGradesComment = try await self.request("Grades/Comments")
         
         let gradesRaw: SynergiaGrades = try await self.request("Grades")
         
         var grades = [String: [Grade]]()
         gradesRaw.Grades.forEach { grade in
             if let category = categories.first(where: { $0.Id == grade.Category.Id }) {
-                let grade = Grade(category: category, grade: grade, users: self.users, subjects: self.subjects)
+                let grade = Grade(
+                    category: category,
+                    grade: grade,
+                    comment: commentsRaw.getCommentById(grade.Id),
+                    users: self.users,
+                    subjects: self.subjects
+                )
                 
                 if grades[grade.subject] == nil {
                     grades[grade.subject] = []

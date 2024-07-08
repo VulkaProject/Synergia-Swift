@@ -3,12 +3,12 @@ import Foundation
 struct SynergiaMe: Decodable {
     struct Me: Decodable {
         struct Account: Decodable {
-            var Id: Int64
-            var UserId: Int64
+            var Id: UInt64
+            var UserId: UInt64
             var FirstName: String
             var LastName: String
             var Email: String
-            var GroupId: Int64
+            var GroupId: UInt64
             var IsActive: Bool
             var Login: String
         }
@@ -19,7 +19,7 @@ struct SynergiaMe: Decodable {
         }
         
         var Account: Account
-        var Refresh: Int64
+        var Refresh: UInt64
         var User: User
         var Class: IdAndUrl
     }
