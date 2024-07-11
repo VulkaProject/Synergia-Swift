@@ -173,16 +173,16 @@ public class SynergiaClient {
         let attRaw: SynergiaAttendances = try await self.request("Attendances")
         
         return attRaw.Attendances.reduce(into: [String: [Attendance]]()) { dict, attendance in
-            if dict[attendance.Date] == nil {
-                dict[attendance.Date] = []
-            }
-            
             guard let att = Attendance.new(
                 attendance: attendance,
                 types: attTypes,
                 colors: self.colors,
                 users: self.users
             ) else { return }
+            
+            if dict[attendance.Date] == nil {
+                dict[attendance.Date] = []
+            }
             dict[attendance.Date]?.append(att)
         }
     }
