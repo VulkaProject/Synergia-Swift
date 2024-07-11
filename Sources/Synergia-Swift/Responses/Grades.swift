@@ -70,9 +70,9 @@ public class Grade {
     /// Date when this grade was added
     public var date: Date
     /// Color (TODO!)
-    public var color: UInt8
+    public var colorRgb: String
     
-    init(category: SynergiaGradesCategories.GradeCategory, grade: SynergiaGrades.Grade, comment: String?, users: [String: User], subjects: [String: String]) {
+    init(category: SynergiaGradesCategories.GradeCategory, grade: SynergiaGrades.Grade, comment: String?, users: [String: User], subjects: [String: String], colors: [String: String]) {
         self.id = grade.Id
         self.grade = grade.Grade
         self.comment = comment
@@ -82,7 +82,7 @@ public class Grade {
         self.weight = category.Weight ?? 0
         self.gradeType = GradeType(grade: grade)
         self.teacher = users[String(grade.AddedBy.Id)]?.name ?? ""
-        self.color = 0 // TODO!
+        self.colorRgb = colors[String(category.Color.Id)] ?? "000000"
         self.date = grade.AddDate.toDate() ?? Date()
     }
 }

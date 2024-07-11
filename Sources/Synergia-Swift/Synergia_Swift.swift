@@ -13,6 +13,10 @@ public class SynergiaClient {
     private(set) public var subjects: [String: String]!
     /// `users` contains information about school employees. Indexed by user's ID
     private(set) public var users: [String: User]!
+    /// `lessons` contains information about lessons in school. Indexed by lesson ID
+    private(set) public var lessons: [String: Lesson]!
+    /// `colors` contains rgb values of colors. Indexed by color ID
+    private(set) public var colors: [String: String]!
     
     /// Initializes client
     ///
@@ -40,6 +44,8 @@ public class SynergiaClient {
         self.classrooms = try await self.getClassrooms()
         self.subjects = try await self.getSubjects()
         self.users = try await self.getUsers()
+        self.lessons = try await self.getLessons()
+        self.colors = try await self.getColors()
     }
     
     private func request<T: Decodable>(_ endpoint: String) async throws -> T {
@@ -62,6 +68,16 @@ public class SynergiaClient {
     private func getUsers() async throws -> [String: User] {
         let usrs: SynergiaUsers = try await self.request("Users")
         return usrs.toUserDict()
+    }
+    
+    private func getLessons() async throws -> [String: Lesson] {
+        let lsns: SynergiaLessons = try await self.request("Lessons")
+        return lsns.toDict()
+    }
+    
+    private func getColors() async throws -> [String: String] {
+        let clrs: SynergiaColors = try await self.request("Colors")
+        return clrs.toDict()
     }
     
     /// Gets information about the user
@@ -92,7 +108,8 @@ public class SynergiaClient {
                     grade: grade,
                     comment: commentsRaw.getCommentById(grade.Id),
                     users: self.users,
-                    subjects: self.subjects
+                    subjects: self.subjects,
+                    colors: self.colors
                 )
                 
                 if grades[grade.subject] == nil {
@@ -148,5 +165,20 @@ public class SynergiaClient {
         }
         
         return timetable
+    }
+    
+    /// Returns attendances list. Indexed by date formated into `year-month-day`
+    public func getAttendances() async throws -> [String: [Attendance]] {
+        let attTypes: SynergiaAttendanceTypes = try await self.request("Attendances/Types")
+        let attRaw: SynergiaAttendances = try await self.request("Attendances")
+        
+        return attRaw.Attendances.reduce(into: [String: [Attendance]]()) { dict, attendance in
+            if dict[attendance.Date] == nil {
+                dict[attendance.Date] = []
+            }
+            
+            guard let att = Attendance.new(attendance: attendance, types: attTypes, colors: self.colors) else { return }
+            dict[attendance.Date]?.append(att)
+        }
     }
 }
