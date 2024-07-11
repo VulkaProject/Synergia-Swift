@@ -177,7 +177,12 @@ public class SynergiaClient {
                 dict[attendance.Date] = []
             }
             
-            guard let att = Attendance.new(attendance: attendance, types: attTypes, colors: self.colors) else { return }
+            guard let att = Attendance.new(
+                attendance: attendance,
+                types: attTypes,
+                colors: self.colors,
+                users: self.users
+            ) else { return }
             dict[attendance.Date]?.append(att)
         }
     }
