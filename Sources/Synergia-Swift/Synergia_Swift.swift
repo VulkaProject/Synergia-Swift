@@ -152,7 +152,7 @@ public class SynergiaClient {
             lessons.forEach { lesson in
                 var timetableItem: TimetableItem? = nil
                 if lesson.count > 0 {
-                    timetableItem = TimetableItem(lesson[0], day: day)
+                    timetableItem = TimetableItem(lesson[0])
                     
                     let classroomId = lesson[0].Classroom.Id
                     if let classroom = self.classrooms[classroomId] {
